@@ -27,3 +27,7 @@ async def delete_booking(booking_id: str):
     if "message" in result and result["message"] == "Booking not found":
         raise HTTPException(status_code=404, detail=result["message"])
     return result
+
+@router.get("/")
+async def greet():
+    return {"message": "Welcome to the Booking API!"}
