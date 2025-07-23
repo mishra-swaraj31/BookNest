@@ -1,0 +1,92 @@
+[
+    {
+        "id": "1",
+        "title": "Modern Apartment in City Center",
+        "description": "A beautiful property located in a prime area with all amenities nearby.",
+        "beds": 2,
+        "baths": 1,
+        "price": 150,
+        "image": "https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+        "id": "2",
+        "title": "Cozy Cottage Near the Lake",
+        "description": "Perfect for a small family or couple looking for a peaceful retreat.",
+        "beds": 3,
+        "baths": 2,
+        "price": 200,
+        "image": "https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+        "id": "3",
+        "title": "Luxury Villa with Pool",
+        "description": "High-end finishes and spacious interiors make this a dream home.",
+        "beds": 5,
+        "baths": 3,
+        "price": 450,
+        "image": "https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+        "id": "4",
+        "title": "Spacious Family Home",
+        "description": "Close to schools, parks, and shopping centers.",
+        "beds": 4,
+        "baths": 2,
+        "price": 300,
+        "image": "https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+        "id": "5",
+        "title": "Stylish Studio Flat",
+        "description": "Compact yet comfortable living space ideal for singles.",
+        "beds": 1,
+        "baths": 1,
+        "price": 100,
+        "image": "https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+        "id": "6",
+        "title": "Penthouse with Skyline View",
+        "description": "Enjoy panoramic views and luxurious living.",
+        "beds": 3,
+        "baths": 2,
+        "price": 400,
+        "image": "https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+        "id": "7",
+        "title": "Rustic Farmhouse Retreat",
+        "description": "Escape to the countryside in this charming farmhouse.",
+        "beds": 4,
+        "baths": 2,
+        "price": 250,
+        "image": "https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+        "id": "8",
+        "title": "Beachfront Bungalow",
+        "description": "Wake up to the sound of waves in this beachfront paradise.",
+        "beds": 2,
+        "baths": 1,
+        "price": 350,
+        "image": "https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+        "id": "9",
+        "title": "Urban Loft with Balcony",
+        "description": "Modern design with open-plan layout and natural light.",
+        "beds": 2,
+        "baths": 1,
+        "price": 180,
+        "image": "https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+        "id": "10",
+        "title": "Suburban House with Garden",
+        "description": "Quiet neighborhood with plenty of outdoor space.",
+        "beds": 3,
+        "baths": 2,
+        "price": 220,
+        "image": "https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    }
+]
