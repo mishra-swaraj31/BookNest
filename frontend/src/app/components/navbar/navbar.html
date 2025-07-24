@@ -1,13 +1,73 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
-  <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="#">
-    <i class="bi bi-house-door-fill fs-5"></i>
-    StayFinder
-  </a>
-  <div class="ms-auto d-flex align-items-center gap-3">
-    <button class="btn btn-outline-light btn-sm px-4">List your property</button>
-    <button class="btn btn-outline-light btn-sm rounded-circle d-flex align-items-center justify-content-center p-0" style="width: 36px; height: 36px;">
-      <i class="bi bi-globe"></i>
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold d-flex align-items-center gap-2" routerLink="/">
+      <i class="bi bi-house-door-fill fs-5"></i>
+      StayFinder
+    </a>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
     </button>
-    <img src="assets/profile.png" alt="User" class="rounded-circle" width="32" height="32">
+    
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/search" routerLinkActive="active">Search</a>
+        </li>
+      </ul>
+      
+      <div class="d-flex align-items-center gap-3">
+        <!-- Language dropdown -->
+        <div class="dropdown">
+          <button class="btn btn-outline-light btn-sm rounded-circle d-flex align-items-center justify-content-center p-0"
+              style="width: 36px; height: 36px;"
+              title="Change language"
+              aria-label="Change language"
+              id="languageDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false">
+            <i class="bi bi-globe"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="languageDropdown">
+            <li><button class="dropdown-item">English</button></li>
+            <li><button class="dropdown-item">Français</button></li>
+            <li><button class="dropdown-item">Español</button></li>
+            <li><button class="dropdown-item">Deutsch</button></li>
+          </ul>
+        </div>
+        
+        <!-- Not logged in -->
+        <ng-container *ngIf="!isLoggedIn">
+          <a class="btn btn-outline-light btn-sm px-4" routerLink="/login">Login</a>
+          <a class="btn btn-primary btn-sm px-4" routerLink="/register">Register</a>
+        </ng-container>
+        
+        <!-- Logged in -->
+        <ng-container *ngIf="isLoggedIn">
+          <a class="btn btn-outline-light btn-sm px-4" routerLink="/my-properties">My Properties</a>
+          <button class="btn btn-outline-light btn-sm px-4">List your property</button>
+          <div class="dropdown">
+            <img [src]="currentUser?.profileImage || 'assets/profile.png'" 
+                 [alt]="currentUser?.firstName || 'User'" 
+                 class="rounded-circle" 
+                 width="32" 
+                 height="32"
+                 style="cursor: pointer;"
+                 id="userDropdown"
+                 data-bs-toggle="dropdown"
+                 aria-expanded="false">
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="userDropdown">
+              <li><a class="dropdown-item" routerLink="/profile">My Profile</a></li>
+              <li><a class="dropdown-item" routerLink="/profile" [queryParams]="{tab: 'bookings'}">My Bookings</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><button class="dropdown-item" (click)="logout()">Sign Out</button></li>
+            </ul>
+          </div>
+        </ng-container>
+      </div>
+    </div>
   </div>
 </nav>

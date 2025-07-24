@@ -1,0 +1,235 @@
+<app-navbar></app-navbar>
+
+<div class="bg-dark text-light min-vh-100 pb-5">
+  <div class="container py-5">
+    <!-- Loading state -->
+    <div *ngIf="!user || !bookings" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-3">Loading your profile data...</p>
+    </div>
+    
+    <div class="row" *ngIf="user && bookings">
+      <!-- Sidebar -->
+      <div class="col-lg-3 mb-4">
+        <div class="card bg-dark border-secondary">
+          <div class="card-body text-center">
+            <img [src]="user.profileImage" alt="{{ user.firstName }} {{ user.lastName }}" class="rounded-circle img-thumbnail mb-3" width="120">
+            <h4>{{ user.firstName }} {{ user.lastName }}</h4>
+            <p class="text-muted">{{ user.email }}</p>
+            <div class="d-grid gap-2 mt-3">
+              <button class="btn" 
+                [class.btn-primary]="activeTab === 'profile'" 
+                [class.btn-outline-secondary]="activeTab !== 'profile'" 
+                (click)="setActiveTab('profile')">
+                <i class="bi bi-person me-2"></i>Profile
+              </button>
+              <button class="btn" 
+                [class.btn-primary]="activeTab === 'bookings'" 
+                [class.btn-outline-secondary]="activeTab !== 'bookings'" 
+                (click)="setActiveTab('bookings')">
+                <i class="bi bi-calendar-check me-2"></i>My Bookings
+              </button>
+              <button class="btn" 
+                [class.btn-primary]="activeTab === 'settings'" 
+                [class.btn-outline-secondary]="activeTab !== 'settings'" 
+                (click)="setActiveTab('settings')">
+                <i class="bi bi-gear me-2"></i>Settings
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="col-lg-9">
+        <!-- Profile Tab -->
+        <div *ngIf="activeTab === 'profile'" class="fade-in">
+          <div class="card bg-dark border-secondary mb-4">
+            <div class="card-header bg-dark border-secondary">
+              <h4 class="mb-0">Personal Information</h4>
+            </div>
+            <div class="card-body">
+              <div class="row mb-4">
+                <div class="col-md-6 col-sm-6 mb-3">
+                  <label class="form-label text-muted">First Name</label>
+                  <p class="mb-0">{{ user.firstName }}</p>
+                </div>
+                <div class="col-md-6 col-sm-6 mb-3">
+                  <label class="form-label text-muted">Last Name</label>
+                  <p class="mb-0">{{ user.lastName }}</p>
+                </div>
+                <div class="col-md-6 col-sm-6 mb-3">
+                  <label class="form-label text-muted">Email</label>
+                  <p class="mb-0">{{ user.email }}</p>
+                </div>
+                <div class="col-md-6 col-sm-6 mb-3">
+                  <label class="form-label text-muted">Phone</label>
+                  <p class="mb-0">{{ user.phone }}</p>
+                </div>
+              </div>
+              <button class="btn btn-outline-primary">
+                <i class="bi bi-pencil me-2"></i>Edit Profile
+              </button>
+            </div>
+          </div>
+
+          <div class="card bg-dark border-secondary">
+            <div class="card-header bg-dark border-secondary">
+              <h4 class="mb-0">Address Information</h4>
+            </div>
+            <div class="card-body">
+              <div class="row mb-4">
+                <div class="col-md-12 mb-3">
+                  <label class="form-label text-muted">Address</label>
+                  <p class="mb-0">{{ user.address }}</p>
+                </div>
+                <div class="col-sm-6 col-md-4 mb-3">
+                  <label class="form-label text-muted">City</label>
+                  <p class="mb-0">{{ user.city }}</p>
+                </div>
+                <div class="col-sm-6 col-md-4 mb-3">
+                  <label class="form-label text-muted">State/Province</label>
+                  <p class="mb-0">{{ user.state }}</p>
+                </div>
+                <div class="col-sm-6 col-md-4 mb-3">
+                  <label class="form-label text-muted">Postal Code</label>
+                  <p class="mb-0">{{ user.zipCode }}</p>
+                </div>
+                <div class="col-md-12 mb-3">
+                  <label class="form-label text-muted">Country</label>
+                  <p class="mb-0">{{ user.country }}</p>
+                </div>
+              </div>
+              <div class="d-flex justify-content-center justify-content-md-start">
+                <button class="btn btn-outline-primary">
+                  <i class="bi bi-pencil me-2"></i>Edit Address
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bookings Tab -->
+        <div *ngIf="activeTab === 'bookings'" class="fade-in">
+          <div class="card bg-dark border-secondary mb-4">
+            <div class="card-header bg-dark border-secondary d-flex justify-content-between align-items-center">
+              <h4 class="mb-0">My Bookings</h4>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-outline-primary active">All</button>
+                <button type="button" class="btn btn-outline-primary">Upcoming</button>
+                <button type="button" class="btn btn-outline-primary">Completed</button>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <div class="list-group list-group-flush">
+                <div *ngFor="let booking of bookings" class="list-group-item bg-dark text-light border-secondary p-0">
+                  <div class="row g-0">
+                    <div class="col-md-3">
+                      <img [src]="booking.image" class="img-fluid rounded-start h-100" style="object-fit: cover;" alt="Property Image">
+                    </div>
+                    <div class="col-md-9">
+                      <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                          <h5 class="card-title mb-1">{{ booking.propertyName }}</h5>
+                          <span class="badge" [ngClass]="getStatusBadgeClass(getBookingStatus(booking.checkIn, booking.checkOut))">
+                            {{ getBookingStatus(booking.checkIn, booking.checkOut) | titlecase }}
+                          </span>
+                        </div>
+                        <p class="card-text text-muted">{{ booking.address }}</p>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                          <div>
+                            <p class="mb-0"><small>{{ formatDate(booking.checkIn) }} - {{ formatDate(booking.checkOut) }}</small></p>
+                            <p class="mb-0"><small>{{ calculateNights(booking.checkIn, booking.checkOut) }} nights · {{ booking.guests }} guests</small></p>
+                          </div>
+                          <div class="text-end">
+                            <p class="mb-0"><small class="text-muted">Booking Ref:</small></p>
+                            <p class="mb-0"><small>{{ booking.bookingReference }}</small></p>
+                          </div>
+                        </div>
+                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mt-3">
+                          <span class="fw-bold mb-2 mb-sm-0">${{ booking.price * calculateNights(booking.checkIn, booking.checkOut) }}</span>
+                          <div class="d-flex">
+                            <button class="btn btn-sm btn-outline-secondary me-2">
+                              <i class="bi bi-pencil me-1"></i>Modify
+                            </button>
+                            <button class="btn btn-sm btn-primary" [routerLink]="['/booking-confirm']" [queryParams]="{ref: booking.bookingReference}">
+                              <i class="bi bi-eye me-1"></i>View Details
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div *ngIf="activeTab === 'settings'" class="fade-in">
+          <div class="card bg-dark border-secondary mb-4">
+            <div class="card-header bg-dark border-secondary">
+              <h4 class="mb-0">Account Settings</h4>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-6 col-md-8 col-sm-12 mb-4">
+                  <h5>Password</h5>
+                  <p class="text-muted">Change your account password</p>
+                  <button class="btn btn-outline-primary w-100 w-sm-auto">
+                    <i class="bi bi-key me-2"></i>Change Password
+                  </button>
+                </div>
+              </div>
+              
+              <hr class="border-secondary">
+              
+              <div class="row mb-4">
+                <div class="col-12">
+                  <h5>Notifications</h5>
+                  <p class="text-muted">Manage your email notifications</p>
+                </div>
+                
+                <div class="col-lg-8 col-md-10 col-sm-12">
+                  <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="bookingNotifications" checked>
+                    <label class="form-check-label" for="bookingNotifications">Booking confirmations and updates</label>
+                  </div>
+                  
+                  <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="promotionalEmails" checked>
+                    <label class="form-check-label" for="promotionalEmails">Promotional emails and offers</label>
+                  </div>
+                  
+                  <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="accountNotifications" checked>
+                    <label class="form-check-label" for="accountNotifications">Account activity and security alerts</label>
+                  </div>
+                  
+                  <button class="btn btn-outline-primary w-100 w-sm-auto">
+                    <i class="bi bi-save me-2"></i>Save Preferences
+                  </button>
+                </div>
+              </div>
+              
+              <hr class="border-secondary">
+              
+              <div class="row">
+                <div class="col-lg-6 col-md-8 col-sm-12">
+                  <h5>Delete Account</h5>
+                  <p class="text-muted">Permanently delete your account and all associated data</p>
+                  <button class="btn btn-outline-danger w-100 w-sm-auto">
+                    <i class="bi bi-trash me-2"></i>Delete Account
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

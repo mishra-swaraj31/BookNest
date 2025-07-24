@@ -1,0 +1,13 @@
+{
+  "id": "1",
+  "firstName": "Sophia",
+  "lastName": "Smith",
+  "email": "sophia.smith@example.com",
+  "phone": "+1 (555) 123-4567",
+  "country": "United States",
+  "address": "123 Main Street",
+  "city": "San Francisco",
+  "state": "CA",
+  "zipCode": "94101",
+  "profileImage": "assets/profile.png"
+}

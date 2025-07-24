@@ -1,33 +1,49 @@
-from fastapi import APIRouter, HTTPException
-from app.schemas.booking import BookingCreate, BookingUpdate, BookingOut
-from app.repos import booking_repo
+from fastapi import APIRouter, HTTPException, status
+from app.schemas.booking import Booking, BookingCreate, BookingUpdate, BookingOut
+from app.repos.booking_repo import create_booking, get_booking, get_booking_by_reference, get_bookings_by_property_id, get_all_bookings, update_booking, delete_booking
+from typing import List
 
-router = APIRouter()
+router = APIRouter(prefix="/bookings", tags=["bookings"])
 
-@router.post("/", response_model=BookingOut)
-async def create_booking(booking: BookingCreate):
-    return await booking_repo.create_booking(booking.dict())
+@router.post("/", response_model=BookingOut, status_code=status.HTTP_201_CREATED)
+async def create_booking_endpoint(booking: BookingCreate):
+    booking_dict = booking.dict()
+    booking_id = await create_booking(booking_dict)
+    created_booking = await get_booking(booking_id)
+    return created_booking
 
-@router.get("/", response_model=list[BookingOut])
-async def get_all_bookings():
-    return await booking_repo.get_all_bookings()
-
-@router.get("/{booking_id}")
-async def update_booking(booking_id: str, booking: BookingUpdate):
-    existing_booking = await booking_repo.get_booking(booking_id)
-    if not existing_booking:
+@router.get("/{booking_id}", response_model=BookingOut)
+async def get_booking_endpoint(booking_id: str):
+    booking = await get_booking(booking_id)
+    if not booking:
         raise HTTPException(status_code=404, detail="Booking not found")
-    
-    updated_booking = await booking_repo.update_booking(booking_id, booking.dict())
-    return updated_booking
+    return booking
 
-@router.delete("/{booking_id}")
-async def delete_booking(booking_id: str):
-    result = await booking_repo.delete_booking(booking_id)
-    if "message" in result and result["message"] == "Booking not found":
-        raise HTTPException(status_code=404, detail=result["message"])
-    return result
+@router.get("/reference/{booking_reference}", response_model=BookingOut)
+async def get_booking_by_reference_endpoint(booking_reference: str):
+    booking = await get_booking_by_reference(booking_reference)
+    if not booking:
+        raise HTTPException(status_code=404, detail="Booking not found")
+    return booking
 
-@router.get("/")
-async def greet():
-    return {"message": "Welcome to the Booking API!"}
+@router.get("/property/{property_id}", response_model=List[BookingOut])
+async def get_bookings_by_property_endpoint(property_id: str):
+    return await get_bookings_by_property_id(property_id)
+
+@router.get("/", response_model=List[BookingOut])
+async def get_all_bookings_endpoint():
+    return await get_all_bookings()
+
+@router.put("/{booking_id}", response_model=BookingOut)
+async def update_booking_endpoint(booking_id: str, booking: BookingUpdate):
+    booking_dict = booking.dict(exclude_unset=True)
+    updated = await update_booking(booking_id, booking_dict)
+    if not updated:
+        raise HTTPException(status_code=404, detail="Booking not found")
+    return await get_booking(booking_id)
+
+@router.delete("/{booking_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_booking_endpoint(booking_id: str):
+    deleted = await delete_booking(booking_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Booking not found")

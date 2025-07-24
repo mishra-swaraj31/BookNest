@@ -1,6 +1,235 @@
 <app-navbar></app-navbar>
-<div class="container-fluid d-flex justify-content-center align-items-center" style="background-color: #f8f9fa; min-height: 100vh;">
-  <div class="card border-0 shadow-lg w-100" style="border-radius: 1rem; max-width: 1200px;">
-    <div class="card-body">
-      <h1 class="text-center mb-4">Search Results</h1>
-      <div class="row g-4">
+
+<div class="container-fluid bg-dark text-light min-vh-100 py-4">
+  <div class="container">
+    <div class="row mb-4">
+      <div class="col-md-6 mb-3 mb-md-0">
+        <form (ngSubmit)="search()" class="d-flex">
+          <div class="input-group">
+            <span class="input-group-text bg-transparent border-secondary text-light">
+              <i class="bi bi-search"></i>
+            </span>
+            <input 
+              type="text" 
+              class="form-control bg-transparent border-secondary text-light" 
+              placeholder="Search location" 
+              [(ngModel)]="searchQuery"
+              name="searchQuery"
+            >
+            <button *ngIf="searchQuery" class="btn btn-outline-secondary" type="button" (click)="clearSearch()">
+              <i class="bi bi-x-lg"></i>
+            </button>
+            <button class="btn btn-primary" type="submit">
+              Search
+            </button>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-6 d-flex justify-content-md-end justify-content-center gap-2">
+        <div class="dropdown">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-sort-down me-2"></i>Sort
+          </button>
+          <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="sortDropdown">
+            <li><button class="dropdown-item" [class.active]="sortOption === 'rating-desc'" (click)="setSortOption('rating-desc')">Top Rated</button></li>
+            <li><button class="dropdown-item" [class.active]="sortOption === 'price-asc'" (click)="setSortOption('price-asc')">Price: Low to High</button></li>
+            <li><button class="dropdown-item" [class.active]="sortOption === 'price-desc'" (click)="setSortOption('price-desc')">Price: High to Low</button></li>
+          </ul>
+        </div>
+        <button class="btn btn-outline-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#filtersOffcanvas" aria-controls="filtersOffcanvas">
+          <i class="bi bi-filter me-2"></i>Filter
+        </button>
+      </div>
+    </div>
+
+    <p class="mb-4">{{ filteredProperties.length }} properties found {{ searchQuery ? 'in ' + searchQuery : '' }}</p>
+
+    <div *ngIf="filteredProperties.length === 0" class="text-center py-5">
+      <i class="bi bi-search fs-1 mb-3 d-block"></i>
+      <h4>No properties found</h4>
+      <p class="text-muted">Try adjusting your search or filters to find what you're looking for.</p>
+      <button class="btn btn-outline-primary mt-2" (click)="clearSearch()">Clear Search</button>
+    </div>
+
+    <div class="list-group mb-4">
+      <a *ngFor="let p of displayedProperties" [routerLink]="['/property', p.id]" class="list-group-item list-group-item-action bg-dark text-light border-secondary mb-3 p-0 overflow-hidden property-card">
+        <div class="row g-0">
+          <div class="col-md-3 col-sm-4">
+            <div class="property-image-container">
+              <img [src]="p.image" [alt]="p.title" class="img-fluid h-100" style="object-fit: cover; width: 100%;"> 
+            </div>
+          </div>
+          <div class="col-md-9 col-sm-8 p-3">
+            <div class="d-flex flex-column flex-md-row justify-content-between">
+              <div class="property-info">
+                <h5 class="mb-1">{{ p.title }}</h5>
+                <p class="text-muted mb-2">{{ p.location }}</p>
+                <p class="mb-2 small">{{ p.beds }} beds · {{ p.baths }} bath</p>
+                <p class="mb-2 small text-success" *ngIf="p.freeCancellation">Free cancellation</p>
+                <p class="mb-0 small description-text d-none d-md-block">{{ p.description | slice:0:150 }}{{ p.description.length > 150 ? '...' : '' }}</p>
+              </div>
+              <div class="text-md-end mt-3 mt-md-0">
+                <div class="d-flex align-items-center mb-2 justify-content-start justify-content-md-end">
+                  <span class="badge bg-primary me-1">{{ p.rating }}</span>
+                  <i class="bi bi-star-fill text-warning"></i>
+                  <span class="ms-1 small">({{ p.reviewsCount }})</span>
+                </div>
+                <h5 class="mb-0 price-tag">${{ p.price }}</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Pagination -->
+    <nav *ngIf="filteredProperties.length > 0" class="mt-4">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <button class="page-link bg-transparent text-light border-secondary" (click)="goToPage(currentPage - 1)" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </button>
+        </li>
+        
+        <!-- First page always shown -->
+        <li class="page-item" [class.active]="currentPage === 1">
+          <button class="page-link" [class.bg-primary]="currentPage === 1" [class.bg-transparent]="currentPage !== 1" 
+                  [class.text-light]="currentPage !== 1" (click)="goToPage(1)" class="page-link border-secondary">1</button>
+        </li>
+        
+        <!-- Show ellipsis if needed -->
+        <li *ngIf="currentPage > 3" class="page-item disabled">
+          <span class="page-link bg-transparent text-light border-secondary">...</span>
+        </li>
+        
+        <!-- Pages before current -->
+        <li *ngIf="currentPage > 2" class="page-item">
+          <button class="page-link bg-transparent text-light border-secondary" (click)="goToPage(currentPage - 1)">{{ currentPage - 1 }}</button>
+        </li>
+        
+        <!-- Current page (if not first or last) -->
+        <li *ngIf="currentPage !== 1 && currentPage !== totalPages" class="page-item active">
+          <button class="page-link bg-primary border-secondary">{{ currentPage }}</button>
+        </li>
+        
+        <!-- Pages after current -->
+        <li *ngIf="currentPage < totalPages - 1" class="page-item">
+          <button class="page-link bg-transparent text-light border-secondary" (click)="goToPage(currentPage + 1)">{{ currentPage + 1 }}</button>
+        </li>
+        
+        <!-- Show ellipsis if needed -->
+        <li *ngIf="currentPage < totalPages - 2" class="page-item disabled">
+          <span class="page-link bg-transparent text-light border-secondary">...</span>
+        </li>
+        
+        <!-- Last page always shown if not the first page -->
+        <li *ngIf="totalPages > 1" class="page-item" [class.active]="currentPage === totalPages">
+          <button class="page-link" [class.bg-primary]="currentPage === totalPages" [class.bg-transparent]="currentPage !== totalPages" 
+                  [class.text-light]="currentPage !== totalPages" (click)="goToPage(totalPages)" class="page-link border-secondary">{{ totalPages }}</button>
+        </li>
+        
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <button class="page-link bg-transparent text-light border-secondary" (click)="goToPage(currentPage + 1)" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+           </button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<!-- Filters Offcanvas -->
+<div class="offcanvas offcanvas-end bg-dark text-light" tabindex="-1" id="filtersOffcanvas" aria-labelledby="filtersOffcanvasLabel">
+  <div class="offcanvas-header border-bottom border-secondary">
+    <h5 class="offcanvas-title" id="filtersOffcanvasLabel">Filters</h5>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="mb-4">
+      <label for="priceRange" class="form-label d-flex justify-content-between">
+        <span>Price range</span>
+        <span>${{priceMin}} - ${{priceMax}}</span>
+      </label>
+      <div class="d-flex gap-2 align-items-center mb-2">
+        <input type="number" class="form-control form-control-sm bg-transparent text-light border-secondary" 
+               [(ngModel)]="priceMin" name="priceMin" min="0" max="{{priceMax-10}}">
+        <span>to</span>
+        <input type="number" class="form-control form-control-sm bg-transparent text-light border-secondary" 
+               [(ngModel)]="priceMax" name="priceMax" min="{{priceMin+10}}" max="1000">
+      </div>
+    </div>
+    
+    <div class="mb-4">
+      <label class="form-label">Property type</label>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" [(ngModel)]="propertyTypes['hotel']" id="hotelCheck" name="hotelCheck">
+        <label class="form-check-label" for="hotelCheck">Hotel</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" [(ngModel)]="propertyTypes['apartment']" id="apartmentCheck" name="apartmentCheck">
+        <label class="form-check-label" for="apartmentCheck">Apartment</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" [(ngModel)]="propertyTypes['villa']" id="villaCheck" name="villaCheck">
+        <label class="form-check-label" for="villaCheck">Villa</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" [(ngModel)]="propertyTypes['resort']" id="resortCheck" name="resortCheck">
+        <label class="form-check-label" for="resortCheck">Resort</label>
+      </div>
+    </div>
+    
+    <div class="mb-4">
+      <label class="form-label">Amenities</label>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" [(ngModel)]="amenities['wifi']" id="wifiCheck" name="wifiCheck">
+        <label class="form-check-label" for="wifiCheck">Free WiFi</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" [(ngModel)]="amenities['pool']" id="poolCheck" name="poolCheck">
+        <label class="form-check-label" for="poolCheck">Swimming Pool</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" [(ngModel)]="amenities['parking']" id="parkingCheck" name="parkingCheck">
+        <label class="form-check-label" for="parkingCheck">Free Parking</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" [(ngModel)]="amenities['aircon']" id="airconCheck" name="airconCheck">
+        <label class="form-check-label" for="airconCheck">Air Conditioning</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" [(ngModel)]="amenities['gym']" id="gymCheck" name="gymCheck">
+        <label class="form-check-label" for="gymCheck">Fitness Center</label>
+      </div>
+    </div>
+    
+    <div class="mb-4">
+      <label class="form-label">Guest rating</label>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="ratingRadio" id="rating9" [value]="9" [(ngModel)]="minRating">
+        <label class="form-check-label" for="rating9">9+ Exceptional</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="ratingRadio" id="rating8" [value]="8" [(ngModel)]="minRating">
+        <label class="form-check-label" for="rating8">8+ Excellent</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="ratingRadio" id="rating7" [value]="7" [(ngModel)]="minRating">
+        <label class="form-check-label" for="rating7">7+ Very Good</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="ratingRadio" id="rating6" [value]="6" [(ngModel)]="minRating">
+        <label class="form-check-label" for="rating6">6+ Good</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="ratingRadio" id="rating0" [value]="0" [(ngModel)]="minRating">
+        <label class="form-check-label" for="rating0">All ratings</label>
+      </div>
+    </div>
+    
+    <div class="d-grid gap-2">
+      <button class="btn btn-primary" data-bs-dismiss="offcanvas" (click)="applyFilters()">Apply Filters</button>
+      <button class="btn btn-outline-secondary" (click)="clearFilters()">Clear All</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,131 @@
+<app-navbar></app-navbar>
+
+<div *ngIf="property" class="bg-dark text-light pb-5">
+  <div class="position-relative property-hero">
+    <img [src]="property.image" class="w-100 property-hero-image" alt="{{ property.title }}">
+    <div class="position-absolute bottom-0 start-0 w-100 p-4 property-hero-overlay">
+      <div class="container">
+        <h1 class="display-5 fw-bold">{{ property.title }}</h1>
+        <p class="fs-5 text-light">{{ property.location }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="d-flex align-items-center mb-3">
+          <span class="badge bg-primary me-2">{{ property.rating }} ★</span>
+          <span>{{ property.reviewsCount }} reviews</span>
+          <span class="ms-3 text-success" *ngIf="property.freeCancellation">Free cancellation</span>
+        </div>
+
+        <h4 class="mb-3">About this stay</h4>
+        <p>{{ property.description }}</p>
+
+        <h5 class="mt-4 mb-3">What this place offers</h5>
+        <div class="d-flex flex-wrap gap-2 mb-4">
+          <span *ngFor="let amenity of property.amenities" class="badge bg-secondary p-2">{{ amenity }}</span>
+        </div>
+
+        <h5 class="mb-3">Rooms</h5>
+        <div class="row g-4 mb-5">
+          <div *ngFor="let room of property.rooms" class="col-md-6">
+            <div class="card bg-dark border-secondary h-100 room-card">
+              <div class="room-image-container">
+                <img [src]="room.image" class="card-img-top" alt="{{ room.name }}">
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">{{ room.name }}</h5>
+                <p class="card-text text-muted room-description">{{ room.description }}</p>
+                <p class="card-text"><i class="bi bi-door-open me-2"></i>{{ room.beds }} beds · {{ room.baths }} bath</p>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                  <h5 class="mb-0 price-tag">${{ room.price }} <small class="text-muted">/night</small></h5>
+                  <button class="btn btn-primary" (click)="bookRoom(room)">Reserve</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h5 class="mb-3">Reviews</h5>
+        <div class="d-flex align-items-center mb-3">
+          <span class="fs-4 me-2">{{ property.rating }}</span>
+          <div class="text-warning">
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-half"></i>
+          </div>
+          <span class="ms-2">({{ property.reviewsCount }} reviews)</span>
+        </div>
+
+        <div class="row mb-4">
+          <div *ngFor="let review of property.reviews" class="col-md-6 mb-3">
+            <div class="card bg-dark border-secondary h-100">
+              <div class="card-body">
+                <div class="d-flex justify-content-between mb-2">
+                  <h6 class="card-title mb-0">{{ review.name }}</h6>
+                  <small class="text-muted">{{ review.date }}</small>
+                </div>
+                <div class="text-warning mb-2">
+                  <i class="bi bi-star-fill" *ngFor="let i of [].constructor(review.rating || 5)"></i>
+                </div>
+                <p class="card-text">{{ review.text }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h5 class="mb-3">Where you'll be</h5>
+        <div class="ratio ratio-16x9 mb-4">
+          <iframe 
+            [src]="sanitizedMapUrl" 
+            width="100%" 
+            height="450" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card bg-dark border-secondary sticky-top" style="top: 20px;">
+          <div class="card-body">
+            <h5 class="card-title mb-4">Book your stay</h5>
+            <form (ngSubmit)="bookProperty()">
+              <div class="mb-3">
+                <label for="check-in" class="form-label">Check-in</label>
+                <input type="date" class="form-control bg-dark text-light border-secondary" id="check-in" [(ngModel)]="booking.checkIn" name="checkIn">
+              </div>
+              <div class="mb-3">
+                <label for="check-out" class="form-label">Check-out</label>
+                <input type="date" class="form-control bg-dark text-light border-secondary" id="check-out" [(ngModel)]="booking.checkOut" name="checkOut">
+              </div>
+              <div class="mb-3">
+                <label for="guests" class="form-label">Guests</label>
+                <input type="number" class="form-control bg-dark text-light border-secondary" id="guests" min="1" [(ngModel)]="booking.guests" name="guests">
+              </div>
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <span>${{ property.price }} x 3 nights</span>
+                <span>${{ property.price * 3 }}</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <span>Service fee</span>
+                <span>${{ serviceFee }}</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mb-3 fw-bold">
+                <span>Total</span>
+                <span>${{ property.price * 3 + serviceFee }}</span>
+              </div>
+              <button type="submit" class="btn btn-primary w-100">Book now</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

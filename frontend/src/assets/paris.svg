@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#6a93cb" />
+      <stop offset="100%" stop-color="#a4bfef" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg-gradient)" />
+  
+  <!-- Eiffel Tower -->
+  <g transform="translate(400, 300) scale(0.8)">
+    <!-- Tower base -->
+    <path d="M-80,180 L-100,200 L100,200 L80,180 Z" fill="#333" />
+    
+    <!-- Tower legs -->
+    <path d="M-80,180 L-60,0 L-40,0 L-20,180 Z" fill="#555" />
+    <path d="M20,180 L40,0 L60,0 L80,180 Z" fill="#555" />
+    
+    <!-- Tower middle section -->
+    <path d="M-60,0 L-40,-100 L40,-100 L60,0 Z" fill="#444" />
+    
+    <!-- Tower top section -->
+    <path d="M-40,-100 L-20,-180 L20,-180 L40,-100 Z" fill="#333" />
+    
+    <!-- Tower spire -->
+    <path d="M-20,-180 L0,-250 L20,-180 Z" fill="#222" />
+  </g>
+  
+  <!-- Buildings silhouette -->
+  <path d="M0,600 L0,450 L50,470 L100,440 L150,460 L200,430 L250,450 L300,420 L350,450 L400,430 L450,450 L500,420 L550,450 L600,430 L650,450 L700,420 L750,450 L800,430 L800,600 Z" fill="#1a1a2e" />
+  
+  <!-- Clouds -->
+  <g fill="#fff" opacity="0.8">
+    <ellipse cx="150" cy="100" rx="60" ry="40" />
+    <ellipse cx="200" cy="90" rx="70" ry="50" />
+    <ellipse cx="250" cy="110" rx="50" ry="30" />
+    
+    <ellipse cx="600" cy="150" rx="70" ry="40" />
+    <ellipse cx="650" cy="140" rx="60" ry="50" />
+    <ellipse cx="700" cy="160" rx="50" ry="30" />
+  </g>
+  
+  <!-- Text overlay -->
+  <rect x="0" y="500" width="800" height="100" fill="#000" opacity="0.5" />
+  <text x="400" y="560" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="#fff" text-anchor="middle">Paris</text>
+</svg>

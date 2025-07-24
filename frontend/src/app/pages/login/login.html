@@ -1,0 +1,76 @@
+<app-navbar></app-navbar>
+
+<div class="bg-dark text-light min-vh-100 d-flex align-items-center justify-content-center py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-5">
+        <div class="card bg-dark border-secondary">
+          <div class="card-header bg-dark border-secondary text-center py-4">
+            <h2 class="mb-0">Login</h2>
+          </div>
+          <div class="card-body p-4">
+            <!-- Error message -->
+            <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+              {{ errorMessage }}
+            </div>
+            
+            <form (ngSubmit)="login()" #loginForm="ngForm">
+              <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <input 
+                  type="email" 
+                  class="form-control bg-dark text-light border-secondary" 
+                  id="email" 
+                  name="email"
+                  [(ngModel)]="email"
+                  required
+                  email
+                  #emailInput="ngModel"
+                  [ngClass]="{'is-invalid': emailInput.invalid && (emailInput.dirty || emailInput.touched)}"
+                >
+                <div *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)" class="invalid-feedback">
+                  <div *ngIf="emailInput.errors?.['required']">Email is required</div>
+                  <div *ngIf="emailInput.errors?.['email']">Please enter a valid email address</div>
+                </div>
+              </div>
+              
+              <div class="mb-4">
+                <label for="password" class="form-label">Password</label>
+                <input 
+                  type="password" 
+                  class="form-control bg-dark text-light border-secondary" 
+                  id="password"
+                  name="password"
+                  [(ngModel)]="password"
+                  required
+                  minlength="6"
+                  #passwordInput="ngModel"
+                  [ngClass]="{'is-invalid': passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)}"
+                >
+                <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="invalid-feedback">
+                  <div *ngIf="passwordInput.errors?.['required']">Password is required</div>
+                  <div *ngIf="passwordInput.errors?.['minlength']">Password must be at least 6 characters long</div>
+                </div>
+              </div>
+              
+              <div class="d-grid gap-2">
+                <button 
+                  type="submit" 
+                  class="btn btn-primary" 
+                  [disabled]="loginForm.invalid || isLoading"
+                >
+                  <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  Login
+                </button>
+                <a routerLink="/register" class="btn btn-outline-secondary">Create an account</a>
+              </div>
+            </form>
+          </div>
+          <div class="card-footer bg-dark border-secondary text-center py-3">
+            <a href="#" class="text-decoration-none">Forgot password?</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
