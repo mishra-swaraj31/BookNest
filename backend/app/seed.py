@@ -7,21 +7,23 @@ from pathlib import Path
 # Add the parent directory to sys.path
 sys.path.append(str(Path(__file__).parent.parent))
 
-from app.db import get_db
+from app.core.db import db
 from app.repos.user_repo import create_user
 from app.repos.property_repo import create_property
 from app.repos.booking_repo import create_booking
+
+db = db  # Already imported from app.core.db
 
 async def seed_database():
     print("Starting database seeding...")
     
     # Get database connection
-    db = await get_db()
+    database = db
     
     # Clear existing collections
-    await db.users.delete_many({})
-    await db.properties.delete_many({})
-    await db.bookings.delete_many({})
+    await database.users.delete_many({})
+    await database.properties.delete_many({})
+    await database.bookings.delete_many({})
     
     print("Cleared existing collections")
     
@@ -35,6 +37,9 @@ async def seed_database():
             
         # Add a password for the user
         user_data["password"] = "password123"
+        
+        # Ensure the email is set to our default user email
+        user_data["email"] = "sophia.smith@example.com"
         
         user_id = await create_user(user_data)
         print(f"Seeded user with ID: {user_id}")

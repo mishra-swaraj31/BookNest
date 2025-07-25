@@ -1,0 +1,107 @@
+{
+  "id": "property-details",
+  "title": "Hotel Booking - Property Details",
+  "components": [
+    {
+      "type": "header",
+      "config": {
+        "title": "{{property.title}}",
+        "subtitle": "{{property.location}}",
+        "alignment": "left",
+        "size": "medium",
+        "showDivider": true
+      }
+    },
+    {
+      "type": "card",
+      "config": {
+        "imageUrl": "{{property.image}}",
+        "imageAlt": "{{property.title}}",
+        "badge": "{{property.rating}} ★",
+        "badgeType": "primary",
+        "layout": "vertical",
+        "aspectRatio": "16:9",
+        "hoverEffect": false
+      }
+    },
+    {
+      "type": "header",
+      "config": {
+        "title": "Property Details",
+        "alignment": "left",
+        "size": "small",
+        "showDivider": true
+      }
+    },
+    {
+      "type": "card",
+      "config": {
+        "title": "Description",
+        "content": "{{property.description}}",
+        "icon": "info-circle",
+        "layout": "vertical",
+        "hoverEffect": false
+      }
+    },
+    {
+      "type": "card",
+      "config": {
+        "title": "Amenities",
+        "content": "{{property.amenities}}",
+        "icon": "check-circle",
+        "layout": "vertical",
+        "hoverEffect": false
+      }
+    },
+    {
+      "type": "header",
+      "config": {
+        "title": "Book This Property",
+        "alignment": "left",
+        "size": "small",
+        "showDivider": true
+      }
+    },
+    {
+      "type": "form",
+      "config": {
+        "title": "Booking Information",
+        "subtitle": "Fill in the details to book this property",
+        "submitButtonText": "Book Now",
+        "showCancelButton": true,
+        "cancelButtonText": "Clear",
+        "layout": "vertical",
+        "fields": [
+          {
+            "name": "checkInDate",
+            "label": "Check-in Date",
+            "type": "date",
+            "required": true
+          },
+          {
+            "name": "checkOutDate",
+            "label": "Check-out Date",
+            "type": "date",
+            "required": true
+          },
+          {
+            "name": "guests",
+            "label": "Number of Guests",
+            "type": "number",
+            "placeholder": "Enter number of guests",
+            "required": true,
+            "min": 1,
+            "max": 10,
+            "defaultValue": 2
+          },
+          {
+            "name": "specialRequests",
+            "label": "Special Requests",
+            "type": "textarea",
+            "placeholder": "Any special requests or requirements?"
+          }
+        ]
+      }
+    }
+  ]
+}

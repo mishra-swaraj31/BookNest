@@ -1,0 +1,5 @@
+<div [ngClass]="headerClasses">
+  <h1 *ngIf="title" class="header-title">{{ title }}</h1>
+  <p *ngIf="subtitle" class="header-subtitle">{{ subtitle }}</p>
+  <hr *ngIf="showDivider" class="header-divider">
+</div>

@@ -1,0 +1,91 @@
+{
+  "title": "StayFinder - Property Details",
+  "components": [
+    {
+      "type": "header",
+      "config": {
+        "title": "{{pageData.property.title}}",
+        "subtitle": "{{pageData.property.location}}",
+        "size": "medium",
+        "alignment": "left"
+      }
+    },
+    {
+      "type": "card",
+      "config": {
+        "image": "{{pageData.property.image}}",
+        "badgeText": "{{pageData.property.rating}} ★",
+        "badgeType": "success",
+        "aspectRatio": "16:9",
+        "hoverEffect": false
+      }
+    },
+    {
+      "type": "card",
+      "config": {
+        "title": "Property Description",
+        "content": "{{pageData.property.description}}",
+        "layout": "vertical"
+      }
+    },
+    {
+      "type": "card",
+      "config": {
+        "title": "Amenities",
+        "content": "{{pageData.property.amenities.join(', ')}}",
+        "layout": "vertical"
+      }
+    },
+    {
+      "type": "header",
+      "config": {
+        "title": "Book This Property",
+        "subtitle": "${{pageData.property.price}} per night",
+        "size": "medium",
+        "alignment": "left"
+      }
+    },
+    {
+      "type": "form",
+      "config": {
+        "title": "Booking Information",
+        "subtitle": "Please fill in the details for your stay",
+        "submitButtonText": "Book Now",
+        "cancelButtonText": "Cancel",
+        "layout": "vertical",
+        "fields": [
+          {
+            "name": "checkIn",
+            "label": "Check-in Date",
+            "type": "date",
+            "required": true,
+            "placeholder": "Select check-in date"
+          },
+          {
+            "name": "checkOut",
+            "label": "Check-out Date",
+            "type": "date",
+            "required": true,
+            "placeholder": "Select check-out date"
+          },
+          {
+            "name": "guests",
+            "label": "Number of Guests",
+            "type": "number",
+            "required": true,
+            "placeholder": "Enter number of guests",
+            "min": 1,
+            "max": 10
+          },
+          {
+            "name": "specialRequests",
+            "label": "Special Requests",
+            "type": "textarea",
+            "required": false,
+            "placeholder": "Any special requests?"
+          }
+        ]
+      }
+    }
+  ]
+}

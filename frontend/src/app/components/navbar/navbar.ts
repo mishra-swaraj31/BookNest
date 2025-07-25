@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterModule, Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule, Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { User } from '../../models/property.model';
+import { Subscription } from 'rxjs';
+import { AutoLoginService } from '../../services/auto-login.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,12 +14,13 @@ import { User } from '../../models/property.model';
   styleUrl: './navbar.css'
 })
 export class Navbar implements OnInit {
-  isLoggedIn = false;
+  isLoggedIn = true; // Always show as logged in
   currentUser: User | null = null;
   
   constructor(
     private apiService: ApiService,
-    private router: Router
+    private router: Router,
+    private autoLoginService: AutoLoginService
   ) {}
   
   ngOnInit(): void {
@@ -25,12 +28,14 @@ export class Navbar implements OnInit {
   }
   
   checkLoginStatus(): void {
-    // Check if token exists in local storage
-    const token = localStorage.getItem('access_token');
+    // Always consider the user as logged in for demo purposes
+    this.isLoggedIn = true;
+    this.loadUserProfile();
     
-    if (token) {
-      this.isLoggedIn = true;
-      this.loadUserProfile();
+    // Ensure we have a token (auto-login if needed)
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+      this.autoLoginService.autoLogin();
     }
   }
   
@@ -47,9 +52,8 @@ export class Navbar implements OnInit {
   }
   
   logout(): void {
-    localStorage.removeItem('access_token');
-    this.isLoggedIn = false;
-    this.currentUser = null;
-    this.router.navigate(['/']);
+    // For demo purposes, we'll just reload the page
+    // which will trigger auto-login again
+    window.location.reload();
   }
 }

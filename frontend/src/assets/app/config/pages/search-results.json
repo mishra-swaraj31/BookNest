@@ -1,0 +1,37 @@
+{
+  "title": "StayFinder - Search Results",
+  "components": [
+    {
+      "type": "header",
+      "config": {
+        "title": "Search Results",
+        "subtitle": "{{queryParams.location ? 'Properties in ' + queryParams.location : 'All Properties'}}",
+        "size": "medium",
+        "alignment": "left"
+      }
+    },
+    {
+      "type": "search",
+      "config": {
+        "placeholder": "Change location",
+        "buttonText": "Search",
+        "searchRoute": "/search",
+        "searchParam": "location",
+        "showIcon": true,
+        "size": "medium",
+        "value": "{{queryParams.location}}"
+      }
+    },
+    {
+      "type": "property-list",
+      "config": {
+        "layout": "grid",
+        "columns": 3,
+        "showFilters": true,
+        "showPagination": true,
+        "itemsPerPage": 9,
+        "searchQuery": "{{queryParams.location}}"
+      }
+    }
+  ]
+}

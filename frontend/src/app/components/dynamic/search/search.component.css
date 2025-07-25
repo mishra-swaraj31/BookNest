@@ -1,0 +1,43 @@
+.dynamic-search {
+  margin-bottom: 1.5rem;
+}
+
+.input-group {
+  border-radius: 16px;
+  overflow: hidden;
+  background: #232f34;
+}
+
+.form-control {
+  box-shadow: none;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: #0d6efd;
+}
+
+.btn-primary {
+  border-radius: 0 16px 16px 0;
+}
+
+/* Search sizes */
+.search-small .input-group {
+  height: 38px;
+}
+
+.search-small .form-control {
+  font-size: 0.875rem;
+}
+
+.search-medium .input-group {
+  height: 48px;
+}
+
+.search-large .input-group {
+  height: 58px;
+}
+
+.search-large .form-control {
+  font-size: 1.1rem;
+}

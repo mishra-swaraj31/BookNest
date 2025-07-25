@@ -1,0 +1,70 @@
+<div [ngClass]="cardClasses" class="card">
+  <!-- Card with horizontal layout -->
+  <div *ngIf="layout === 'horizontal'" class="row g-0">
+    <!-- Image section -->
+    <div *ngIf="imageUrl" class="col-md-4">
+      <div [ngClass]="imageClasses">
+        <img [src]="imageUrl" [alt]="imageAlt" class="img-fluid rounded-start h-100 object-fit-cover">
+      </div>
+    </div>
+    
+    <!-- Content section -->
+    <div [ngClass]="imageUrl ? 'col-md-8' : 'col-12'">
+      <div class="card-body">
+        <!-- Badge -->
+        <span *ngIf="badge" [ngClass]="badgeClasses" class="position-absolute top-0 end-0 mt-2 me-2">
+          {{ badge }}
+        </span>
+        
+        <!-- Title with optional icon -->
+        <h5 *ngIf="title" class="card-title">
+          <i *ngIf="icon" class="bi bi-{{ icon }} me-2"></i>
+          {{ title }}
+        </h5>
+        
+        <!-- Subtitle -->
+        <h6 *ngIf="subtitle" class="card-subtitle mb-2 text-muted">{{ subtitle }}</h6>
+        
+        <!-- Content -->
+        <p *ngIf="content" class="card-text">{{ content }}</p>
+        
+        <!-- Button -->
+        <a *ngIf="buttonText && buttonLink" [routerLink]="buttonLink" [ngClass]="buttonClasses">
+          {{ buttonText }}
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Card with vertical layout -->
+  <ng-container *ngIf="layout === 'vertical'">
+    <!-- Image -->
+    <div *ngIf="imageUrl" [ngClass]="imageClasses">
+      <img [src]="imageUrl" [alt]="imageAlt" class="card-img-top">
+      
+      <!-- Badge -->
+      <span *ngIf="badge" [ngClass]="badgeClasses" class="position-absolute top-0 end-0 mt-2 me-2">
+        {{ badge }}
+      </span>
+    </div>
+    
+    <div class="card-body">
+      <!-- Title with optional icon -->
+      <h5 *ngIf="title" class="card-title">
+        <i *ngIf="icon" class="bi bi-{{ icon }} me-2"></i>
+        {{ title }}
+      </h5>
+      
+      <!-- Subtitle -->
+      <h6 *ngIf="subtitle" class="card-subtitle mb-2 text-muted">{{ subtitle }}</h6>
+      
+      <!-- Content -->
+      <p *ngIf="content" class="card-text">{{ content }}</p>
+      
+      <!-- Button -->
+      <a *ngIf="buttonText && buttonLink" [routerLink]="buttonLink" [ngClass]="buttonClasses">
+        {{ buttonText }}
+      </a>
+    </div>
+  </ng-container>
+</div>

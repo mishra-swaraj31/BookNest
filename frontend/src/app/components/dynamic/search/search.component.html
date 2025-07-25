@@ -1,0 +1,22 @@
+<div [ngClass]="searchClasses">
+  <form (ngSubmit)="search()" class="d-flex">
+    <div class="input-group">
+      <span *ngIf="showIcon" class="input-group-text bg-transparent border-secondary text-light">
+        <i class="bi bi-search"></i>
+      </span>
+      <input 
+        type="text" 
+        class="form-control bg-transparent border-secondary text-light" 
+        [placeholder]="placeholder" 
+        [(ngModel)]="searchQuery"
+        name="searchQuery"
+      >
+      <button *ngIf="searchQuery" class="btn btn-outline-secondary" type="button" (click)="clearSearch()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+      <button class="btn btn-primary" type="submit">
+        {{ buttonText }}
+      </button>
+    </div>
+  </form>
+</div>

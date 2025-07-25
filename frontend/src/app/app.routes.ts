@@ -1,20 +1,21 @@
 import { Routes } from '@angular/router';
-import { Home } from './pages/home/home';
-import { SearchResultsComponent } from './pages/search-results/search-results';
-import { PropertyDetailsComponent } from './pages/property-details/property-details';
 import { BookingConfirmComponent } from './pages/booking-confirm/booking-confirm';
 import { UserProfileComponent } from './pages/user-profile/user-profile';
 import { BookedPropertiesComponent } from './pages/booked-properties/booked-properties';
-import { LoginComponent } from './pages/login/login';
-import { RegisterComponent } from './pages/register/register';
+import { PageContainerComponent } from './components/page-container/page-container';
 
 export const routes: Routes = [
-    {path: '', component: Home},
-    {path: 'search', component: SearchResultsComponent},
-    {path: 'property/:id', component: PropertyDetailsComponent},
+    // Dynamic page routes using PageContainerComponent
+    {path: '', component: PageContainerComponent, data: { pageId: 'home' }},
+    {path: 'search', component: PageContainerComponent, data: { pageId: 'search-results' }},
+    {path: 'property/:id', component: PageContainerComponent, data: { pageId: 'property-details' }},
+    
+    // Legacy routes - can be migrated to dynamic pages later
     {path: 'booking-confirm', component: BookingConfirmComponent},
     {path: 'profile', component: UserProfileComponent},
     {path: 'my-properties', component: BookedPropertiesComponent},
-    {path: 'login', component: LoginComponent},
-    {path: 'register', component: RegisterComponent},
+    
+    // Redirect login and register to home since we're auto-logging in
+    {path: 'login', redirectTo: '', pathMatch: 'full'},
+    {path: 'register', redirectTo: '', pathMatch: 'full'},
 ];

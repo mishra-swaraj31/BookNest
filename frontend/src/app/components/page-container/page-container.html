@@ -1,0 +1,22 @@
+<app-navbar></app-navbar>
+
+<div class="page-container">
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">Loading page...</p>
+  </div>
+  
+  <div *ngIf="error" class="error-container">
+    <div class="alert alert-danger" role="alert">
+      <i class="bi bi-exclamation-triangle-fill me-2"></i>
+      {{ error }}
+    </div>
+    <button class="btn btn-outline-light mt-3" (click)="navigateToHome()">
+      <i class="bi bi-house-door me-2"></i>Return to Home
+    </button>
+  </div>
+  
+  <ng-container #dynamicComponentContainer></ng-container>
+</div>

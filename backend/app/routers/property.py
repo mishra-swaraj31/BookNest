@@ -1,13 +1,16 @@
-from fastapi import APIRouter, HTTPException, status, Query
+from fastapi import APIRouter, HTTPException, status, Query, Depends
 from app.schemas.property import PropertyCreate, PropertyUpdate, PropertyOut
 from app.repos.property_repo import create_property, get_property, get_all_properties, search_properties, filter_properties, update_property, delete_property
 from typing import List, Optional, Dict, Any
+from app.core.auto_auth import get_current_user_no_auth
 
 router = APIRouter(prefix="/properties", tags=["properties"])
 
 @router.post("/", response_model=PropertyOut, status_code=status.HTTP_201_CREATED)
-async def create_property_endpoint(property_data: PropertyCreate):
+async def create_property_endpoint(property_data: PropertyCreate, current_user: dict = Depends(get_current_user_no_auth)):
     property_dict = property_data.dict()
+    # Ensure the property is associated with the current user
+    property_dict["userId"] = current_user.get("id", "1")
     property_id = await create_property(property_dict)
     created_property = await get_property(property_id)
     return created_property
@@ -67,7 +70,7 @@ async def get_properties_endpoint(
     return await get_all_properties()
 
 @router.put("/{property_id}", response_model=PropertyOut)
-async def update_property_endpoint(property_id: str, property_data: PropertyUpdate):
+async def update_property_endpoint(property_id: str, property_data: PropertyUpdate, current_user: dict = Depends(get_current_user_no_auth)):
     property_dict = property_data.dict(exclude_unset=True)
     updated = await update_property(property_id, property_dict)
     if not updated:
@@ -75,7 +78,7 @@ async def update_property_endpoint(property_id: str, property_data: PropertyUpda
     return await get_property(property_id)
 
 @router.delete("/{property_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_property_endpoint(property_id: str):
+async def delete_property_endpoint(property_id: str, current_user: dict = Depends(get_current_user_no_auth)):
     deleted = await delete_property(property_id)
     if not deleted:
         raise HTTPException(status_code=404, detail="Property not found")

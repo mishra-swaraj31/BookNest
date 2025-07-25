@@ -1,0 +1,40 @@
+{
+  "id": "search-results",
+  "title": "Hotel Booking - Search Results",
+  "components": [
+    {
+      "type": "header",
+      "config": {
+        "title": "Search Results",
+        "subtitle": "Find your perfect accommodation",
+        "alignment": "left",
+        "size": "medium",
+        "showDivider": true
+      }
+    },
+    {
+      "type": "search",
+      "config": {
+        "placeholder": "Change your destination",
+        "buttonText": "Search",
+        "searchRoute": "/search",
+        "searchParam": "location",
+        "showIcon": true,
+        "size": "medium"
+      }
+    },
+    {
+      "type": "property-list",
+      "config": {
+        "layout": "list",
+        "showFilters": true,
+        "showPagination": true,
+        "itemsPerPage": 10,
+        "sortOption": "rating-desc",
+        "priceMin": 0,
+        "priceMax": 1000,
+        "minRating": 0
+      }
+    }
+  ]
+}

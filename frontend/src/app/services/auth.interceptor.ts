@@ -17,6 +17,7 @@ export const authInterceptor: HttpInterceptorFn = (
     return next(authRequest);
   }
   
-  // Otherwise, proceed with the original request
+  // For demo purposes, we'll always proceed with the original request
+  // even if no token exists, since we've modified the backend to use a default user
   return next(request);
 };

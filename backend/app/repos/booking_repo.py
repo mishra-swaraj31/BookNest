@@ -1,10 +1,10 @@
 from bson import ObjectId
 from typing import List, Optional
-from app.db import get_db
+from app.core.db import get_db
 import uuid
 
 async def create_booking(booking_data: dict) -> str:
-    db = await get_db()
+    db = get_db()
     # Generate a unique booking reference
     booking_data["bookingReference"] = f"BK{uuid.uuid4().hex[:8].upper()}"
     result = await db.bookings.insert_one(booking_data)

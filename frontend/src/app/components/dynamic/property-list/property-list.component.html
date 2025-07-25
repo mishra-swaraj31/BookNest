@@ -1,0 +1,149 @@
+<div class="property-list-container">
+  <!-- Title and subtitle if provided -->
+  <div *ngIf="title || subtitle" class="mb-4 text-center">
+    <h2 *ngIf="title" class="property-list-title">{{ title }}</h2>
+    <p *ngIf="subtitle" class="property-list-subtitle">{{ subtitle }}</p>
+  </div>
+  
+  <!-- Filters section -->
+  <div *ngIf="showFilters" class="filters-container mb-4">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="sortOption" class="form-label">Sort by</label>
+        <select id="sortOption" class="form-select" [(ngModel)]="sortOption" (change)="applyFilters()">
+          <option value="rating-desc">Top Rated</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+        </select>
+      </div>
+      
+      <div class="col-md-6 mb-3">
+        <label for="minRating" class="form-label">Minimum Rating: {{ minRating }}</label>
+        <input type="range" class="form-range" id="minRating" min="0" max="5" step="0.5" [(ngModel)]="minRating" (change)="applyFilters()">
+      </div>
+      
+      <div class="col-12 mb-3">
+        <label class="form-label">Price Range: ${{ priceMin }} - ${{ priceMax }}</label>
+        <div class="d-flex gap-2 align-items-center">
+          <input type="number" class="form-control" [(ngModel)]="priceMin" (change)="applyFilters()">
+          <span>to</span>
+          <input type="number" class="form-control" [(ngModel)]="priceMax" (change)="applyFilters()">
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Loading state -->
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">Loading properties...</p>
+  </div>
+  
+  <!-- Error state -->
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+  
+  <!-- No results state -->
+  <div *ngIf="!isLoading && !error && filteredProperties.length === 0" class="text-center py-5">
+    <i class="bi bi-search fs-1 text-muted"></i>
+    <p class="mt-3">No properties found matching your criteria.</p>
+  </div>
+  
+  <!-- Results count -->
+  <div *ngIf="!isLoading && !error && filteredProperties.length > 0" class="mb-3">
+    <p class="text-muted">{{ filteredProperties.length }} properties found</p>
+  </div>
+  
+  <!-- Grid layout -->
+  <div *ngIf="!isLoading && !error && layout === 'grid' && displayedProperties.length > 0" [ngClass]="gridClasses">
+    <div *ngFor="let property of displayedProperties" class="col">
+      <div class="card h-100 property-card">
+        <img [src]="property.image" class="card-img-top" [alt]="property.title">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <h5 class="card-title mb-0">{{ property.title }}</h5>
+            <span class="badge bg-primary rounded-pill">
+              <i class="bi bi-star-fill me-1"></i>{{ property.rating }}
+            </span>
+          </div>
+          <p class="card-text text-muted mb-1">
+            <i class="bi bi-geo-alt-fill me-1"></i>{{ property.location }}
+          </p>
+          <p class="card-text mb-3">
+            <span class="fw-bold">${{ property.price }}</span> / night
+          </p>
+          <div class="d-flex justify-content-between">
+            <span class="text-muted">
+              <i class="bi bi-door-closed me-1"></i>{{ property.beds }} beds
+            </span>
+            <span class="text-muted">
+              <i class="bi bi-droplet me-1"></i>{{ property.baths }} baths
+            </span>
+          </div>
+        </div>
+        <div class="card-footer bg-transparent border-top-0">
+          <a [routerLink]="['/property', property.id]" class="btn btn-outline-primary w-100">View Details</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- List layout -->
+  <div *ngIf="!isLoading && !error && layout === 'list' && displayedProperties.length > 0" class="list-layout">
+    <div *ngFor="let property of displayedProperties" class="card mb-3 property-list-item">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img [src]="property.image" class="img-fluid rounded-start h-100 object-fit-cover" [alt]="property.title">
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h5 class="card-title mb-0">{{ property.title }}</h5>
+              <span class="badge bg-primary rounded-pill">
+                <i class="bi bi-star-fill me-1"></i>{{ property.rating }}
+              </span>
+            </div>
+            <p class="card-text text-muted mb-1">
+              <i class="bi bi-geo-alt-fill me-1"></i>{{ property.location }}
+            </p>
+            <p class="card-text mb-2">{{ property.description | slice:0:150 }}...</p>
+            <div class="d-flex justify-content-between mb-3">
+              <span class="text-muted">
+                <i class="bi bi-door-closed me-1"></i>{{ property.beds }} beds
+              </span>
+              <span class="text-muted">
+                <i class="bi bi-droplet me-1"></i>{{ property.baths }} baths
+              </span>
+              <span class="fw-bold">
+                ${{ property.price }} / night
+              </span>
+            </div>
+            <a [routerLink]="['/property', property.id]" class="btn btn-outline-primary">View Details</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Pagination -->
+  <nav *ngIf="showPagination && totalPages > 1 && !isLoading && !error" aria-label="Page navigation" class="mt-4">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" [class.disabled]="currentPage === 1">
+        <a class="page-link" href="javascript:void(0)" (click)="goToPage(currentPage - 1)" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <li *ngFor="let page of paginationArray" class="page-item" [class.active]="page === currentPage">
+        <a class="page-link" href="javascript:void(0)" (click)="goToPage(page)">{{ page }}</a>
+      </li>
+      <li class="page-item" [class.disabled]="currentPage === totalPages">
+        <a class="page-link" href="javascript:void(0)" (click)="goToPage(currentPage + 1)" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>

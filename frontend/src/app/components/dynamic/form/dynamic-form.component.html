@@ -1,0 +1,94 @@
+<div [ngClass]="formClasses">
+  <div *ngIf="formTitle || formSubtitle" class="form-header mb-4">
+    <h3 *ngIf="formTitle" class="form-title">{{ formTitle }}</h3>
+    <p *ngIf="formSubtitle" class="form-subtitle text-muted">{{ formSubtitle }}</p>
+  </div>
+  
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <div *ngFor="let field of fields" class="mb-3" [ngClass]="{'row': formLayout === 'horizontal'}">
+      <!-- Label -->
+      <label 
+        [for]="field.name" 
+        class="form-label" 
+        [ngClass]="{'col-sm-3': formLayout === 'horizontal'}"
+      >
+        {{ field.label }}
+        <span *ngIf="field.required" class="text-danger">*</span>
+      </label>
+      
+      <!-- Field container -->
+      <div [ngClass]="{'col-sm-9': formLayout === 'horizontal'}">
+        <!-- Text, Email, Password, Number inputs -->
+        <input 
+          *ngIf="['text', 'email', 'password', 'number'].includes(field.type)" 
+          [type]="field.type" 
+          [id]="field.name"
+          [formControlName]="field.name"
+          class="form-control"
+          [placeholder]="field.placeholder || ''"
+          [ngClass]="{'is-invalid': isFieldInvalid(field.name)}"
+        >
+        
+        <!-- Date input -->
+        <input 
+          *ngIf="field.type === 'date'" 
+          type="date" 
+          [id]="field.name"
+          [formControlName]="field.name"
+          class="form-control"
+          [ngClass]="{'is-invalid': isFieldInvalid(field.name)}"
+        >
+        
+        <!-- Textarea -->
+        <textarea 
+          *ngIf="field.type === 'textarea'" 
+          [id]="field.name"
+          [formControlName]="field.name"
+          class="form-control"
+          [placeholder]="field.placeholder || ''"
+          rows="3"
+          [ngClass]="{'is-invalid': isFieldInvalid(field.name)}"
+        ></textarea>
+        
+        <!-- Select dropdown -->
+        <select 
+          *ngIf="field.type === 'select'" 
+          [id]="field.name"
+          [formControlName]="field.name"
+          class="form-select"
+          [ngClass]="{'is-invalid': isFieldInvalid(field.name)}"
+        >
+          <option value="" disabled selected>{{ field.placeholder || 'Select an option' }}</option>
+          <option *ngFor="let option of field.options" [value]="option.value">{{ option.label }}</option>
+        </select>
+        
+        <!-- Checkbox -->
+        <div *ngIf="field.type === 'checkbox'" class="form-check">
+          <input 
+            type="checkbox" 
+            [id]="field.name"
+            [formControlName]="field.name"
+            class="form-check-input"
+            [ngClass]="{'is-invalid': isFieldInvalid(field.name)}"
+          >
+          <label class="form-check-label" [for]="field.name">{{ field.placeholder || '' }}</label>
+        </div>
+        
+        <!-- Validation error message -->
+        <div *ngIf="isFieldInvalid(field.name)" class="invalid-feedback">
+          {{ getErrorMessage(field) }}
+        </div>
+      </div>
+    </div>
+    
+    <!-- Form buttons -->
+    <div class="mt-4 d-flex" [ngClass]="{'justify-content-end': formLayout === 'horizontal'}">
+      <button *ngIf="showCancelButton" type="button" class="btn btn-outline-secondary me-2" (click)="onCancel()">
+        {{ cancelButtonText }}
+      </button>
+      <button type="submit" class="btn btn-primary">
+        {{ submitButtonText }}
+      </button>
+    </div>
+  </form>
+</div>

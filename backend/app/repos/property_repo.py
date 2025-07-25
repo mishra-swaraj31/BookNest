@@ -1,28 +1,28 @@
 from bson import ObjectId
 from typing import List, Optional
-from app.db import get_db
+from app.core.db import get_db
 
 async def create_property(property_data: dict) -> str:
-    db = await get_db()
+    db = get_db()
     result = await db.properties.insert_one(property_data)
     return str(result.inserted_id)
 
 async def get_property(property_id: str) -> Optional[dict]:
-    db = await get_db()
+    db = get_db()
     property_doc = await db.properties.find_one({"_id": ObjectId(property_id)})
     if property_doc:
         property_doc["id"] = str(property_doc["_id"])
     return property_doc
 
 async def get_all_properties() -> List[dict]:
-    db = await get_db()
+    db = get_db()
     properties = await db.properties.find().to_list(length=100)
     for property_doc in properties:
         property_doc["id"] = str(property_doc["_id"])
     return properties
 
 async def search_properties(query: str) -> List[dict]:
-    db = await get_db()
+    db = get_db()
     # Search in title and description
     properties = await db.properties.find({
         "$or": [
@@ -37,7 +37,7 @@ async def search_properties(query: str) -> List[dict]:
     return properties
 
 async def filter_properties(filters: dict) -> List[dict]:
-    db = await get_db()
+    db = get_db()
     query = {}
     
     # Price range filter
@@ -69,7 +69,7 @@ async def filter_properties(filters: dict) -> List[dict]:
     return properties
 
 async def update_property(property_id: str, property_data: dict) -> bool:
-    db = await get_db()
+    db = get_db()
     result = await db.properties.update_one(
         {"_id": ObjectId(property_id)},
         {"$set": property_data}
@@ -77,6 +77,6 @@ async def update_property(property_id: str, property_data: dict) -> bool:
     return result.modified_count > 0
 
 async def delete_property(property_id: str) -> bool:
-    db = await get_db()
+    db = get_db()
     result = await db.properties.delete_one({"_id": ObjectId(property_id)})
     return result.deleted_count > 0

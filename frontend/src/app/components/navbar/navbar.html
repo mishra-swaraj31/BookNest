@@ -39,14 +39,8 @@
           </ul>
         </div>
         
-        <!-- Not logged in -->
-        <ng-container *ngIf="!isLoggedIn">
-          <a class="btn btn-outline-light btn-sm px-4" routerLink="/login">Login</a>
-          <a class="btn btn-primary btn-sm px-4" routerLink="/register">Register</a>
-        </ng-container>
-        
-        <!-- Logged in -->
-        <ng-container *ngIf="isLoggedIn">
+        <!-- Always logged in for demo -->
+        <ng-container>
           <a class="btn btn-outline-light btn-sm px-4" routerLink="/my-properties">My Properties</a>
           <button class="btn btn-outline-light btn-sm px-4">List your property</button>
           <div class="dropdown">

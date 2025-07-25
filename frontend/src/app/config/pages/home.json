@@ -1,0 +1,122 @@
+{
+  "id": "home",
+  "title": "Hotel Booking - Home",
+  "components": [
+    {
+      "type": "header",
+      "config": {
+        "title": "Find Your Perfect Stay",
+        "subtitle": "Search from thousands of hotels, apartments, and unique stays around the world",
+        "alignment": "center",
+        "size": "large",
+        "showDivider": true
+      }
+    },
+    {
+      "type": "search",
+      "config": {
+        "placeholder": "Where are you going?",
+        "buttonText": "Search",
+        "searchRoute": "/search",
+        "searchParam": "location",
+        "showIcon": true,
+        "size": "large"
+      }
+    },
+    {
+      "type": "header",
+      "config": {
+        "title": "Popular Destinations",
+        "subtitle": "Explore our most visited locations",
+        "alignment": "center",
+        "size": "medium",
+        "showDivider": true
+      }
+    },
+    {
+      "type": "property-list",
+      "config": {
+        "layout": "grid",
+        "columns": 4,
+        "showFilters": false,
+        "showPagination": false,
+        "itemsPerPage": 4,
+        "sortOption": "rating-desc"
+      }
+    },
+    {
+      "type": "header",
+      "config": {
+        "title": "Featured Cities",
+        "subtitle": "Discover amazing properties in these popular cities",
+        "alignment": "center",
+        "size": "medium",
+        "showDivider": true
+      }
+    },
+    {
+      "type": "card",
+      "config": {
+        "title": "Paris",
+        "subtitle": "The City of Light",
+        "imageUrl": "assets/images/paris.jpg",
+        "imageAlt": "Paris",
+        "content": "Experience the romance and charm of Paris with its iconic landmarks and exquisite cuisine.",
+        "buttonText": "Explore Paris",
+        "buttonLink": "/search?location=Paris",
+        "buttonType": "primary",
+        "layout": "vertical",
+        "aspectRatio": "16:9",
+        "hoverEffect": true
+      }
+    },
+    {
+      "type": "card",
+      "config": {
+        "title": "London",
+        "subtitle": "The Historic Capital",
+        "imageUrl": "assets/images/london.jpg",
+        "imageAlt": "London",
+        "content": "Discover the perfect blend of history and modernity in one of the world's most visited cities.",
+        "buttonText": "Explore London",
+        "buttonLink": "/search?location=London",
+        "buttonType": "primary",
+        "layout": "vertical",
+        "aspectRatio": "16:9",
+        "hoverEffect": true
+      }
+    },
+    {
+      "type": "card",
+      "config": {
+        "title": "New York",
+        "subtitle": "The City That Never Sleeps",
+        "imageUrl": "assets/images/newyork.jpg",
+        "imageAlt": "New York",
+        "content": "Experience the energy and excitement of the Big Apple with its iconic skyline and diverse neighborhoods.",
+        "buttonText": "Explore New York",
+        "buttonLink": "/search?location=New York",
+        "buttonType": "primary",
+        "layout": "vertical",
+        "aspectRatio": "16:9",
+        "hoverEffect": true
+      }
+    },
+    {
+      "type": "card",
+      "config": {
+        "title": "Tokyo",
+        "subtitle": "The Ultra-Modern Metropolis",
+        "imageUrl": "assets/images/tokyo.jpg",
+        "imageAlt": "Tokyo",
+        "content": "Immerse yourself in the fascinating blend of traditional culture and cutting-edge technology.",
+        "buttonText": "Explore Tokyo",
+        "buttonLink": "/search?location=Tokyo",
+        "buttonType": "primary",
+        "layout": "vertical",
+        "aspectRatio": "16:9",
+        "hoverEffect": true
+      }
+    }
+  ]
+}

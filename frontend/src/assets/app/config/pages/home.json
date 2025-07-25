@@ -1,0 +1,106 @@
+{
+  "title": "StayFinder - Find Your Perfect Stay",
+  "components": [
+    {
+      "type": "header",
+      "config": {
+        "title": "Find Your Perfect Stay",
+        "subtitle": "Discover amazing properties at the best prices",
+        "size": "large",
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "search",
+      "config": {
+        "placeholder": "Where are you going?",
+        "buttonText": "Search",
+        "searchRoute": "/search",
+        "searchParam": "location",
+        "showIcon": true,
+        "size": "large"
+      }
+    },
+    {
+      "type": "property-list",
+      "config": {
+        "title": "Featured Properties",
+        "subtitle": "Handpicked properties for an unforgettable experience",
+        "layout": "grid",
+        "columns": 3,
+        "showFilters": false,
+        "showPagination": true,
+        "itemsPerPage": 6
+      }
+    },
+    {
+      "type": "header",
+      "config": {
+        "title": "Popular Destinations",
+        "subtitle": "Explore our most visited cities",
+        "size": "medium",
+        "alignment": "center"
+      }
+    },
+    {
+      "type": "card",
+      "config": {
+        "title": "Paris",
+        "subtitle": "France",
+        "image": "/assets/paris.svg",
+        "content": "Experience the city of love with its iconic landmarks and romantic atmosphere.",
+        "buttonText": "Explore",
+        "buttonLink": "/search?location=Paris",
+        "buttonType": "primary",
+        "layout": "vertical",
+        "aspectRatio": "4:3",
+        "hoverEffect": true
+      }
+    },
+    {
+      "type": "card",
+      "config": {
+        "title": "London",
+        "subtitle": "United Kingdom",
+        "image": "/assets/london.svg",
+        "content": "Discover the historic city with its rich culture, museums, and vibrant neighborhoods.",
+        "buttonText": "Explore",
+        "buttonLink": "/search?location=London",
+        "buttonType": "primary",
+        "layout": "vertical",
+        "aspectRatio": "4:3",
+        "hoverEffect": true
+      }
+    },
+    {
+      "type": "card",
+      "config": {
+        "title": "New York",
+        "subtitle": "United States",
+        "image": "/assets/new-york.svg",
+        "content": "Visit the city that never sleeps with its iconic skyline and endless entertainment.",
+        "buttonText": "Explore",
+        "buttonLink": "/search?location=New York",
+        "buttonType": "primary",
+        "layout": "vertical",
+        "aspectRatio": "4:3",
+        "hoverEffect": true
+      }
+    },
+    {
+      "type": "card",
+      "config": {
+        "title": "Tokyo",
+        "subtitle": "Japan",
+        "image": "/assets/tokyo.svg",
+        "content": "Explore the perfect blend of traditional culture and futuristic technology.",
+        "buttonText": "Explore",
+        "buttonLink": "/search?location=Tokyo",
+        "buttonType": "primary",
+        "layout": "vertical",
+        "aspectRatio": "4:3",
+        "hoverEffect": true
+      }
+    }
+  ]
+}
